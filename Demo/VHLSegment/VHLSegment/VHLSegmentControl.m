@@ -64,6 +64,20 @@
     }
 }
 #pragma mark Setter & Getter
+- (void)setSegmentHeight:(CGFloat)segmentHeight {
+    CGRect segmentRect = _segment.frame;
+    segmentRect.size.height = segmentHeight;
+    _segment.frame = segmentRect;
+    
+    CGRect bottomLineRect = self.bottomLine.frame;
+    bottomLineRect.origin.y = segmentHeight;
+    self.bottomLine.frame = bottomLineRect;
+    
+    CGRect pageRect = _pageVC.view.frame;
+    pageRect.origin.y = segmentHeight;
+    pageRect.size.height =  self.bounds.size.height - segmentHeight;
+    _pageVC.view.frame = pageRect;
+}
 - (void)setViewControllers:(NSArray *)viewControllers {
     _viewControllers = viewControllers;
     [_pageVC reloadData];
@@ -81,9 +95,11 @@
     }
 }
 - (void)setSelectedIndex:(NSInteger)selectedIndex {
-    _selectedIndex = selectedIndex;
-    _segment.selectedIndex = _selectedIndex;
-    [self switchToIndex:_selectedIndex];
+    if (selectedIndex < self.titles.count) {
+         _selectedIndex = selectedIndex;
+        _segment.selectedIndex = _selectedIndex;
+        [self switchToIndex:_selectedIndex];
+    }
 }
 - (void)setItemSelectedColor:(UIColor *)itemSelectedColor {
     _segment.itemSelectedColor = itemSelectedColor;
@@ -112,7 +128,7 @@
     _segment.hideShadow = _hideShadow;
 }
 - (void)setNeedHiddenOneSegment:(BOOL)needHiddenOneSegment {
-    _needHiddenOneSegment = YES;
+    _needHiddenOneSegment = needHiddenOneSegment;
     if (_needHiddenOneSegment && self.titles.count == 1) {
         self.segment.hidden = YES;
         self.bottomLine.hidden = YES;

@@ -26,6 +26,8 @@
 @property (nonatomic, strong) VHLSegment *segment;
 @property (nonatomic, strong) VHLPageViewController *pageVC;
 
+@property (nonatomic, assign) CGFloat segmentHeight;        // segment 高度
+
 /**
  * 需要显示的视图
  */

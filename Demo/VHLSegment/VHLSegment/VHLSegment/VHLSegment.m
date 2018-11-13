@@ -102,14 +102,15 @@
     } else {
         _needAverageScreen = NO;
     }
-    //
-    [_collectionView performBatchUpdates:nil completion:^(BOOL finished) {}];
     
     // 设置阴影
     _shadow.backgroundColor = self.shadowColor?self.shadowColor:[self getItemSelectedColorWithIndex:_selectedIndex];
     _shadow.hidden = self.hideShadow;
     _shadow.layer.cornerRadius = self.shadowRadius;
     _shadow.frame = [self shadowRectOfIndex:_selectedIndex];
+    
+    self.isFirstLoad = YES;
+    self.selectedIndex = _selectedIndex;
 }
 
 #pragma mark - Setter - shadow
@@ -129,6 +130,7 @@
     _hideShadow = hideShadow;
     _shadow.hidden = _hideShadow;
 }
+#pragma mark setter - item
 - (void)setItemInteritemSpacing:(CGFloat)itemInteritemSpacing {
     _itemInteritemSpacing = itemInteritemSpacing;
     [self relayout];
@@ -137,17 +139,23 @@
 #pragma mark - Setter
 - (void)setTitles:(NSArray *)titles {
     _titles = titles;
+    // 缓存宽度数组
     self.widthArray = [NSMutableArray array];
     for (int i = 0; i < _titles.count; i++) {
         [self.widthArray addObject:@(0.0)];
     }
     self.isFirstLoad = YES;
     [_collectionView reloadData];
-    self.selectedIndex = 0;
-    [self chooseTheIndex:self.selectedIndex];
+    
+    [self chooseTheIndex:0];
+    [self relayout];
 }
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex {
+    if (selectedIndex < 0 || selectedIndex >= self.titles.count) {
+        NSLog(@"- 设置选择项错误");
+        return;
+    }
     VHLSegmentItem *currentItem = (VHLSegmentItem *)[_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:_selectedIndex inSection:0]];
     currentItem.selected = NO;
     currentItem.textLabel.textColor = _itemNormalColor;
@@ -268,10 +276,10 @@
     CGFloat iWidth = 0;
     if (indexPath.row < _titles.count && indexPath.row < _widthArray.count) {
         // 减少计算 boundingRectWithSize
-        CGFloat cacheWidth = [[self.widthArray objectAtIndex:indexPath.row] floatValue];
-        if (cacheWidth > 0) {
-            return cacheWidth;
-        }
+//        CGFloat cacheWidth = [[self.widthArray objectAtIndex:indexPath.row] floatValue];
+//        if (cacheWidth > 0) {
+//            return cacheWidth;
+//        }
         NSString *title = [_titles objectAtIndex:indexPath.row];
         NSStringDrawingOptions opts = NSStringDrawingUsesLineFragmentOrigin |
         NSStringDrawingUsesFontLeading;

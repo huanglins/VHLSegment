@@ -90,32 +90,38 @@
     }
     
     // 1.
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 300)];
-    headerView.userInteractionEnabled = YES;
-    headerView.backgroundColor = [UIColor grayColor];
-    
-    self.segment.titles = self.titles;
-    self.segment.followScrollView = self.pageVC.containerView;
-    [self addChildViewController:self.pageVC];
-    
-    VHLHoverScrollViewController *hoverVC = [[VHLHoverScrollViewController alloc] initWithFrame:self.view.bounds hoverStyle:VHLHoverStyleCenter headerView:headerView hoverView:self.segment bodyView:self.pageVC.view];
-    [self.view addSubview:hoverVC.view];
-    [self addChildViewController:hoverVC];
-    
-//    // new
-//    self.segmentControl = [[VHLSegmentControl alloc] initWithFrame:self.tableView.bounds Titles:self.titles viewControllers:self.viewControllers];
-//    //设置代理
-//    self.segmentControl.backgroundColor = [UIColor whiteColor];
-//    self.segmentControl.itemSelectedColor = [UIColor colorWithRed:0.00 green:0.49 blue:1.00 alpha:1.00];
-////    segmentControl.itemNormalFont = [UIFont fontWithName:@"PingFangSC-Semibold" size:15];
-////    segmentControl.itemSelectedFont = [UIFont fontWithName:@"PingFangSC-Semibold" size:16];
+//    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 300)];
+//    headerView.userInteractionEnabled = YES;
+//    headerView.backgroundColor = [UIColor grayColor];
 //
-//    self.segmentControl.shadowStyle = ShadowStyleSpring;
-//    self.segmentControl.shadowWidth = 10;
-//    self.segmentControl.selectedIndex = 1;
-//    // self.segmentControl.pageVC.containerView.delegate = self;
+//    self.segment.titles = self.titles;
+//    self.segment.followScrollView = self.pageVC.containerView;
+//    [self addChildViewController:self.pageVC];
 //
-//    [self addChildViewController:self.segmentControl.pageVC];
+//    VHLHoverScrollViewController *hoverVC = [[VHLHoverScrollViewController alloc] initWithFrame:self.view.bounds hoverStyle:VHLHoverStyleCenter headerView:headerView hoverView:self.segment bodyView:self.pageVC.view];
+//    [self.view addSubview:hoverVC.view];
+//    [self addChildViewController:hoverVC];
+    
+    // new
+    self.segmentControl = [[VHLSegmentControl alloc] initWithFrame:CGRectMake(0, 100, self.view.bounds.size.width, self.view.bounds.size.height - 200) Titles:self.titles viewControllers:self.viewControllers];
+    //设置代理
+    self.segmentControl.backgroundColor = [UIColor whiteColor];
+    self.segmentControl.itemSelectedColor = [UIColor colorWithRed:0.00 green:0.49 blue:1.00 alpha:1.00];
+//    segmentControl.itemNormalFont = [UIFont fontWithName:@"PingFangSC-Semibold" size:15];
+//    segmentControl.itemSelectedFont = [UIFont fontWithName:@"PingFangSC-Semibold" size:16];
+
+    self.segmentControl.needHiddenOneSegment = NO;
+    self.segmentControl.shadowStyle = VHLSegmentShadowStyleSpring;
+    self.segmentControl.shadowWidth = 10;
+    self.segmentControl.segment.itemStyle = VHLSegmentItemStyleProgress;
+    //self.segmentControl.selectedIndex = 1;
+//    _segmentControl.itemSelectedFont = [UIFont fontWithName:@"PingFangSC-Medium" size:20];
+//    _segmentControl.itemNormalFont = [UIFont systemFontOfSize:12];
+    // self.segmentControl.pageVC.containerView.delegate = self;
+
+    [self addChildViewController:self.segmentControl.pageVC];
+    [self.segmentControl showInViewController:self];
+    
 //    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 84, self.view.bounds.size.width, self.view.bounds.size.height - 84) style:UITableViewStylePlain];
 //    self.tableView.dataSource = self;
 //    self.tableView.delegate = self;
